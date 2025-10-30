@@ -26,6 +26,38 @@ export function VideoPlayer({ title, thumbnail, onClose }: VideoPlayerProps) {
   const [progress, setProgress] = useState([0]);
   const [isMuted, setIsMuted] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [likes, setLikes] = useState(45234);
+  const [dislikes, setDislikes] = useState(892);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isDisliked, setIsDisliked] = useState(false);
+
+  const handleLike = () => {
+    if (isLiked) {
+      setLikes(prev => prev - 1);
+      setIsLiked(false);
+    } else {
+      setLikes(prev => prev + 1);
+      setIsLiked(true);
+      if (isDisliked) {
+        setDislikes(prev => prev - 1);
+        setIsDisliked(false);
+      }
+    }
+  };
+
+  const handleDislike = () => {
+    if (isDisliked) {
+      setDislikes(prev => prev - 1);
+      setIsDisliked(false);
+    } else {
+      setDislikes(prev => prev + 1);
+      setIsDisliked(true);
+      if (isLiked) {
+        setLikes(prev => prev - 1);
+        setIsLiked(false);
+      }
+    }
+  };
 
   return (
     <Card className="bg-card border-border overflow-hidden animate-fade-in">
@@ -144,21 +176,63 @@ export function VideoPlayer({ title, thumbnail, onClose }: VideoPlayerProps) {
         </Badge>
       </div>
       
-      <div className="p-6 bg-card/50 backdrop-blur-sm">
-        <h2 className="text-2xl font-bold gradient-text mb-2">{title}</h2>
-        <div className="flex items-center gap-4 text-muted-foreground text-sm">
-          <span className="flex items-center gap-1">
-            <Icon name="Eye" size={16} />
-            1.2M просмотров
-          </span>
-          <span className="flex items-center gap-1">
-            <Icon name="ThumbsUp" size={16} />
-            45K
-          </span>
-          <span className="flex items-center gap-1">
-            <Icon name="Calendar" size={16} />
-            2 дня назад
-          </span>
+      <div className="p-6 bg-card/50 backdrop-blur-sm space-y-4">
+        <div>
+          <h2 className="text-2xl font-bold gradient-text mb-2">{title}</h2>
+          <div className="flex items-center gap-4 text-muted-foreground text-sm">
+            <span className="flex items-center gap-1">
+              <Icon name="Eye" size={16} />
+              1.2M просмотров
+            </span>
+            <span className="flex items-center gap-1">
+              <Icon name="Calendar" size={16} />
+              2 дня назад
+            </span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <Button
+            variant="outline"
+            className={`transition-all hover-lift ${
+              isLiked 
+                ? 'bg-primary text-primary-foreground border-primary hover:bg-primary/90' 
+                : 'hover:bg-primary/10 border-border'
+            }`}
+            onClick={handleLike}
+          >
+            <Icon name="ThumbsUp" size={20} className="mr-2" />
+            {likes.toLocaleString()}
+          </Button>
+          
+          <Button
+            variant="outline"
+            className={`transition-all hover-lift ${
+              isDisliked 
+                ? 'bg-destructive text-destructive-foreground border-destructive hover:bg-destructive/90' 
+                : 'hover:bg-destructive/10 border-border'
+            }`}
+            onClick={handleDislike}
+          >
+            <Icon name="ThumbsDown" size={20} className="mr-2" />
+            {dislikes.toLocaleString()}
+          </Button>
+
+          <Button
+            variant="outline"
+            className="hover:bg-primary/10 border-border hover-lift transition-all"
+          >
+            <Icon name="Share2" size={20} className="mr-2" />
+            Поделиться
+          </Button>
+
+          <Button
+            variant="outline"
+            className="hover:bg-primary/10 border-border hover-lift transition-all ml-auto"
+          >
+            <Icon name="BookmarkPlus" size={20} className="mr-2" />
+            Сохранить
+          </Button>
         </div>
       </div>
     </Card>

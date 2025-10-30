@@ -3,8 +3,10 @@ import { Navbar } from '@/components/Navbar';
 import { Sidebar } from '@/components/Sidebar';
 import { VideoCard } from '@/components/VideoCard';
 import { VideoPlayer } from '@/components/VideoPlayer';
+import { CommentSection } from '@/components/CommentSection';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Separator } from '@/components/ui/separator';
 import Icon from '@/components/ui/icon';
 
 const videoData = [
@@ -85,14 +87,20 @@ export default function Index() {
         <main className="flex-1 overflow-y-auto">
           <div className="container mx-auto px-6 py-8">
             {selectedVideo && selectedVideoData ? (
-              <div className="max-w-6xl mx-auto animate-fade-in">
+              <div className="max-w-6xl mx-auto animate-fade-in space-y-8">
                 <VideoPlayer
                   title={selectedVideoData.title}
                   thumbnail={selectedVideoData.thumbnail}
                   onClose={() => setSelectedVideo(null)}
                 />
+
+                <Separator className="bg-border" />
                 
-                <div className="mt-8">
+                <CommentSection />
+
+                <Separator className="bg-border" />
+                
+                <div>
                   <h3 className="text-2xl font-bold mb-6 gradient-text">Похожие видео</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {videoData.filter(v => v.id !== selectedVideo).slice(0, 3).map((video) => (
